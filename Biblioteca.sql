@@ -1,0 +1,128 @@
+CREATE TABLE LEITOR
+(COD_LEITOR INT NOT NULL PRIMARY KEY,
+NOME VARCHAR(40) NOT NULL,
+DT_NASC DATE);
+
+INSERT INTO LEITOR VALUES
+(1,'JOÃO','2000-01-01'),
+(2,'MARIA','2000-02-02'),
+(3,'JOSEFINA','2000-03-03'),
+(4,'MARIAZINHA','1999-04-04');
+
+CREATE TABLE FUNCIONARIO
+(COD_FUNC INT NOT NULL PRIMARY KEY,
+NOME VARCHAR(40) NOT NULL,
+DT_NASC DATE);
+
+INSERT INTO FUNCIONARIO VALUES
+(1,'JOSÉ','2001-01-01'),
+(2,'ANTÔNIO','2001-02-02'),
+(3,'JOAQUIM','2001-03-03');
+
+CREATE TABLE AUTOR
+(COD_AUTOR INT NOT NULL PRIMARY KEY,
+NOME VARCHAR(40) NOT NULL);
+
+INSERT INTO AUTOR VALUES
+(1,'ASTROGILDO'),
+(2,'PLEBISCÍSTICA'),
+(3,'ROMANOELA'),
+(4,'AREOSWALDO');
+
+CREATE TABLE TITULO
+(COD_TIT INT NOT NULL PRIMARY KEY,
+NOME VARCHAR(100) NOT NULL);
+
+INSERT INTO TITULO VALUES
+(1,'INTRODUÇÃO À BANCO DE DADOS'),
+(2,'A VOLTA DOS QUE NÃO FORAM'),
+(3,'RAPUNZEL E OS 22 ANÕES'),
+(4,'A FADA DA GARANTA');
+
+
+CREATE TABLE AUTORIA
+(COD_AUTORIA INT NOT NULL PRIMARY KEY,
+COD_TIT INT NOT NULL REFERENCES TITULO(COD_TIT),
+COD_AUTOR INT NOT NULL REFERENCES AUTOR(COD_AUTOR));
+
+INSERT INTO AUTORIA VALUES
+(1,1,1),
+(2,2,2),
+(3,3,3),
+(4,1,3),
+(5,3,2);
+
+CREATE TABLE LIVRO
+(COD_LIVRO INT NOT NULL PRIMARY KEY,
+STATUS VARCHAR(1) NOT NULL,
+VALOR_MULTA_DIA INT NOT NULL,
+COD_TIT INT NOT NULL REFERENCES TITULO(COD_TIT));
+
+INSERT INTO LIVRO VALUES
+(1,'D',5,1),
+(2,'D',6,2),
+(3,'D',4,3),
+(4,'D',3,1),
+(5,'D',9,2);
+
+CREATE TABLE EMPRESTIMO
+(COD_EMP INT NOT NULL PRIMARY KEY,
+COD_LEITOR INT NOT NULL REFERENCES LEITOR(COD_LEITOR),
+COD_LIVRO INT NOT NULL REFERENCES LIVRO(COD_LIVRO),
+COD_FUNC INT NOT NULL REFERENCES FUNCIONARIO(COD_FUNC),
+DT_EMP DATE NOT NULL,
+DT_PREV_DEV DATE NOT NULL,
+DT_DEV DATE);
+
+INSERT INTO EMPRESTIMO VALUES
+(1,1,1,1,'2020-01-01','2020-01-02','2020-01-02'),
+(2,2,2,2,'2020-02-02','2020-02-03','2020-02-05'),
+(3,3,3,3,'2020-03-03','2020-03-04','2020-03-08'),
+(4,3,3,1,'2020-04-04','2020-04-05','2020-04-05'),
+(5,2,2,2,'2020-05-05','2020-05-06','2020-05-16'),
+(6,2,2,2,'2020-06-06','2020-06-07',NULL);
+
+CREATE TABLE RESERVA
+(COD_RES INT NOT NULL PRIMARY KEY,
+COD_LEITOR INT NOT NULL REFERENCES LEITOR(COD_LEITOR),
+COD_TIT INT NOT NULL REFERENCES TITULO(COD_TIT),
+COD_FUNC INT NOT NULL REFERENCES FUNCIONARIO(COD_FUNC),
+DT_RES DATE NOT NULL);
+
+INSERT INTO RESERVA VALUES
+(1,1,1,1,CURRENT_DATE),
+(2,2,2,2,CURRENT_DATE),
+(3,2,3,3,CURRENT_DATE);
+
+
+---Questões---
+--1)O nome dos títulos dos livros emprestados para o leitor João pelo funcionário José 
+--OU os reservados para a leitora Maria pelo funcionario Antônio;
+
+--2)O nome dos autores que escreveram os titulos reservados para a leitora Maria, 
+--mas que nunca foram reservados para o leitor mais jovem;
+
+--3)Para cada código e nome de leitor, o valor total pago em multas. 
+--Mostre apenas aqueles leitores cujo valor total das multas é maior que zero. 
+--Conisdere que a data de devolução  é sempre maior ou igual a data prevista de devolução.
+
+--4)O nome dos autores com a respectia quantidade de titulos escritos. 
+--Considere a possibilidade de haver autores sem nenhum titulo piblicado no cadastro. 
+--Para estes, informe o valor zero.
+
+--5)Sem usar a clausula 'not in', o nome dos titulos que nunca foram emprestados 
+--e nem reservados;
+
+--6)Nome dos leitores que reservaram todos os titulos.
+
+
+
+
+
+
+
+
+
+
+
+
